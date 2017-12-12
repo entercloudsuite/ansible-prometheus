@@ -10,6 +10,15 @@ global:
 
 
 
+{% if prometheus_version | version_compare('2.0.0', '>=')  %}
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - {alertmanager_url}:{alertmanager_port}
+{% endif %}
+
+
 {% if prometheus_rule_files is defined %}
 # Rule files specifies a list of files from which rules are read.
 rule_files:
@@ -29,12 +38,18 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: "node"
+{% for job in prometheus_jobs %}
+  - job_name: {{ job.jobname }}
     file_sd_configs:
       - files:
-        - '{{ prometheus_file_sd_config_path }}/*.json'
-        - '{{ prometheus_file_sd_config_path }}/*.yml'
-        - '{{ prometheus_file_sd_config_path }}/*.yaml'
+        - '{{ prometheus_file_sd_config_path }}/{{ job.jobname }}.yml'
+{% endfor %}
+
+#  - job_name: node
+#    file_sd_configs:
+#      - files:
+#        - '{{ prometheus_file_sd_config_path }}/node.yml'
+
     #static_configs:
     #- targets:
     #  - "localhost:9100"

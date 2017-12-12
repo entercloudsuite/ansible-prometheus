@@ -1,0 +1,11 @@
+{% for job in prometheus_jobs %}
+{% if item.jobname == job.jobname %}
+{% for gruop in job.groups %}
+{% for server in groups[gruop] %}
+- targets: ['{{ hostvars[server].ansible_default_ipv4.address }}:{{job.port}}']
+  labels:
+    instance: {{ hostvars[server].ansible_hostname }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}

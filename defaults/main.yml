@@ -7,7 +7,7 @@
 #
 # user-configurable defaults
 #
-
+prometheus_server: my-prometheus.mydomain.it
 prometheus_user:   prometheus
 prometheus_group:  prometheus
 
@@ -27,6 +27,8 @@ prometheus_db_path:              /var/lib/prometheus
 prometheus_log_path:             /var/log/prometheus
 prometheus_pid_path:             /var/run/prometheus
 prometheus_alertmanager_db_path: /var/lib/alertmanager
+alertmanager_url: localhost
+alertmanager_port: 9903
 
 
 prometheus_download_path: /tmp
@@ -50,3 +52,4 @@ prometheus_rebuild:           false
 #---- the following vars are handled in tasks/set-role-variables.yml ------
 
 prometheus_node_exporter_use_systemd: true  # use "systemd" to start/restart service?
+prometheus_rules_manual_configuration: true # set to false for auto configure jobs. ( Look README for more documentation )

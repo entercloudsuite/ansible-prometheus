@@ -135,6 +135,12 @@
   notify:
     - reload prometheus
 
+- name: create tmp copy for manual check
+  template:
+    src: "../templates/prometheus.yml.j2"
+    dest: "/tmp/prometheus.yml"
+  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '>')
+
 - name: copy prometheus main config file from role's default, if necessary new-check
   template:
     src: "../templates/prometheus.yml.j2"

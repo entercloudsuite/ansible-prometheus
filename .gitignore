@@ -1,3 +1,11 @@
-.vagrant
-roles
-result-*
+.DS_Store
+.molecule
+*.retry
+.cache
+*.log
+.idea
+*.iml
+ansible-galaxy-*
+ansible-role-*
+*.pem
+*.pem.pub

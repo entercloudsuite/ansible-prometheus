@@ -23,18 +23,13 @@
     state: directory
     mode: 0755
 
-
 - name: Display all variables/facts known for a host
   debug:
     var: hostvars[inventory_hostname].ansible_default_ipv4.address
 
-- name: create job-sd file
-  template:
-    src: "templates/target.yml"
-    dest: "{{ prometheus_file_sd_config_path }}/{{item.jobname}}.yml"
-  when: inventory_hostname == prometheus_server
-  with_items:
-    - "{{ prometheus_jobs }}"
+- name: install jobs
+  include: install-jobs.yml
+  when: prometheus_jobs is defined
 
 - name: create Prometheus group
   group: name={{ prometheus_group }}  state=present

@@ -1,0 +1,24 @@
+---
+service:
+  prometheus:
+    enabled: true
+    running: true
+user:
+  prometheus:
+    exists: true
+    groups:
+    - prometheus
+    home: /home/prometheus
+group:
+  prometheus:
+    exists: true
+process:
+  prometheus:
+    running: true
+http:
+  http://localhost:9090:
+    status: 200
+    allow-insecure: false
+    no-follow-redirects: false
+    timeout: 5000
+    body: []

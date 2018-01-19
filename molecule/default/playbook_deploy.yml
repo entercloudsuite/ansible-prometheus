@@ -1,0 +1,18 @@
+---
+
+- name: run the main role
+  become: true
+  become_method: sudo
+  become_user: root
+  hosts: all
+  prometheus_server: instance-1
+    prometheus_components:
+      - prometheus
+    prometheus_alertmanager_url: "http://localhost:9093/"
+    prometheus_rule_files:
+      this_is_rule_1_InstanceDown:
+        src: ../../templates/rules/basic.rules
+        dest: basic.rules
+        
+  roles:
+    - { role: ansible-prometheus }

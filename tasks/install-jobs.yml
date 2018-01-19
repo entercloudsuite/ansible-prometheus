@@ -1,0 +1,7 @@
+- name: create job-sd file
+  template:
+    src: "templates/target.yml"
+    dest: "{{ prometheus_file_sd_config_path }}/{{item.jobname}}.yml"
+  when: inventory_hostname == prometheus_server
+  with_items:
+    - "{{ prometheus_jobs }}"

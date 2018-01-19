@@ -22,6 +22,14 @@ The role defines most of its variables in `defaults/main.yml`:
 - Url of the Alertmanager service.  
 - Default value: **"http://localhost:9093/"**  
 
+### `prometheus_version`  
+- Version of the Prometheus service.  
+- Default value: **2.0.0** 
+
+### `alertmanager_version`  
+- Version of the Alertmanager service.  
+- Default value: **0.13.0** 
+
 ## Example Playbook
 
 Run with default vars:

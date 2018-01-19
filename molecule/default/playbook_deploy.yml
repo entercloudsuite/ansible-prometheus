@@ -6,7 +6,7 @@
   become_user: root
   hosts: all
   vars:
-    prometheus_server: openstack
+    prometheus_server: default
     prometheus_components:
       - prometheus
     prometheus_alertmanager_url: "http://localhost:9093/"

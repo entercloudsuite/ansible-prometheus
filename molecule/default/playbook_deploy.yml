@@ -9,7 +9,6 @@
     prometheus_server: default
     prometheus_components:
       - prometheus
-    prometheus_alertmanager_url: "http://localhost:9093/"
     prometheus_rule_files:
       this_is_rule_1_InstanceDown:
         src: ../../templates/rules/basic.rules

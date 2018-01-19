@@ -15,16 +15,20 @@ This role requires Ansible 2.4 or higher.
 The role defines most of its variables in `defaults/main.yml`:
 
 ### `prometheus_components`
-- List of components to be installed.
-- Default value: **[ "prometheus", "alertmanager" ]**
+- List of components to be installed.  
+- Default value: **[ "prometheus", "alertmanager" ]**  
 
-...
+### `prometheus_alertmanager_url`  
+- Url of the Alertmanager service.  
+- Default value: **"http://localhost:9093/"**  
 
 ## Example Playbook
 
 Run with default vars:
 
     - hosts: all
+      vars:
+        prometheus_server: prometheus_hostname
       roles:
         - { role: ansible-prometheus }
 

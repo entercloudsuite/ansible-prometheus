@@ -14,6 +14,5 @@
       this_is_rule_1_InstanceDown:
         src: ../../templates/rules/basic.rules
         dest: basic.rules
-
   roles:
     - { role: ansible-prometheus }

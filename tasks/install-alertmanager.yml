@@ -30,8 +30,6 @@
         prometheus_alertmanager_tarball_url: "https://github.com/prometheus/alertmanager/releases/download/{{ prometheus_alertmanager_version }}/{{ prometheus_alertmanager_signature }}.tar.gz"
       when: prometheus_alertmanager_version | version_compare('0.3', '<')
 
-
-
     - name: download and uncompress alertmanager tarball
       unarchive:
         src: "{{ prometheus_alertmanager_tarball_url }}"
@@ -43,7 +41,6 @@
         validate_certs: no
 
   when: prometheus_alertmanager_version != "git"
-
 
 - block:
 
@@ -72,7 +69,6 @@
 
     - name: build alertmanager source code
       command: make format build
-      #command: make
       args:
         chdir: "{{ prometheus_alertmanager_src_path }}"
         creates: alertmanager
@@ -115,10 +111,6 @@
 
 - name: set INIT status
   service: name=alertmanager enabled=yes
-
-#- name: set INIT status and start
-#  service: name=alertmanager state=started
-#  when: prometheus_use_service|bool
 
 - name: install alertmanager config file from playbook's, if any
   template: src="{{ playbook_dir }}/{{ prometheus_alertmanager_conf }}"  dest="{{ prometheus_config_path }}/alertmanager.yml"

@@ -3,17 +3,21 @@ user:
   prometheus:
     exists: true
     groups:
-    - prometheus
+      - prometheus
     home: /home/prometheus
 group:
   prometheus:
     exists: true
-
 process:
   prometheus:
     running: true
+  alertmanager:
+    running: true
 service:
   prometheus:
+    enabled: true
+    running: true
+  alertmanager:
     enabled: true
     running: true
 http:
@@ -23,15 +27,6 @@ http:
     no-follow-redirects: false
     timeout: 5000
     body: []
-
-process:
-  alertmanager:
-    running: true
-service:
-  alertmanager:
-    enabled: true
-    running: true
-http:
   http://localhost:9093:
     status: 200
     allow-insecure: false

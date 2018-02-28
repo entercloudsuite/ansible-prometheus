@@ -158,7 +158,7 @@
   notify:
     - reload prometheus
 
-- name: copy prometheus main config file from playbook's, if any
+- name: copy prometheus main config file from playbook's, if any new-check
   template:
     src: "{{ playbook_dir }}/{{ prometheus_conf_main }}"
     dest: "{{ prometheus_config_path }}/prometheus.yml"
@@ -167,7 +167,7 @@
   notify:
     - reload prometheus
 
-- name: copy prometheus main config file from playbook's, if any
+- name: copy prometheus main config file from playbook's, if any old-check
   template:
     src: "{{ playbook_dir }}/{{ prometheus_conf_main }}"
     dest: "{{ prometheus_config_path }}/prometheus.yml"

@@ -162,8 +162,16 @@
   template:
     src: "{{ playbook_dir }}/{{ prometheus_conf_main }}"
     dest: "{{ prometheus_config_path }}/prometheus.yml"
-    validate: "{{ prometheus_daemon_dir }}/promtool check-config %s"
+    validate: "{{ prometheus_daemon_dir }}/promtool check config %s" | version_compare('1.8.2', '>')
   when: prometheus_conf_main is defined
   notify:
     - reload prometheus
 
+- name: copy prometheus main config file from playbook's, if any
+  template:
+    src: "{{ playbook_dir }}/{{ prometheus_conf_main }}"
+    dest: "{{ prometheus_config_path }}/prometheus.yml"
+    validate: "{{ prometheus_daemon_dir }}/promtool check-config %s" | version_compare('1.8.2', '<=')
+  when: prometheus_conf_main is defined
+  notify:
+    - reload prometheus

@@ -36,7 +36,12 @@ scrape_configs:
     scrape_interval: 10s
     scrape_timeout:  10s
     static_configs:
+
+{% if prometheus_web_external_url is defined %}
+      - targets: ['{{prometheus_web_external_url}}:9090']
+{% else %}
       - targets: ['127.0.0.1:9090']
+{% endif %}
 
 {% if prometheus_jobs is defined %}
 

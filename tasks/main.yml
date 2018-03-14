@@ -22,6 +22,7 @@
     path: "{{ prometheus_file_sd_config_path }}"
     state: directory
     mode: 0755
+  when: inventory_hostname == prometheus_server
 
 - name: Display all variables/facts known for a host
   debug:

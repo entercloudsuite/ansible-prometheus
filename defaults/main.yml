@@ -19,7 +19,7 @@ prometheus_alertmanager_version:    0.13.0
 prometheus_alertmanager_url: "http://localhost:9093/"
 
 gosu_version: "1.10"
-prometheus_go_version:   1.6.2
+prometheus_go_version:   "1.10"
 
 
 prometheus_install_path:         /opt/prometheus

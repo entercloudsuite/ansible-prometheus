@@ -73,6 +73,8 @@
 
     - name: copy the built prometheus to the install path
       command: "cp -r {{ prometheus_src_path }}/{{ item }} {{ prometheus_install_path }}"
+      arg:
+        creates: "{{ prometheus_install_path }}/{{ item }}"
       with_items:
         - prometheus
         - promtool

@@ -48,8 +48,9 @@ DAEMON_OPTS="$DAEMON_OPTS -web.console.templates={{ prometheus_daemon_dir }}/con
 {% endif %}
 
 ## web-external-url
-{% if prometheus_web_external_url is defined  %}
-DAEMON_OPTS="$DAEMON_OPTS --web.external-url=http://{{ prometheus_web_external_url }} --web.route-prefix={{ prometheus_web_route_prefix }}"
+{% if prometheus_prometheus_web_external_url is defined  %}
+DAEMON_OPTS="$DAEMON_OPTS --web.external-url=http://{{ prometheus_prometheus_web_external_url }} --web.route-prefix={{ prometheus_prometheus_web_route_prefix }}"
+
 {% endif %}
 
 {% if prometheus_opts is defined %}

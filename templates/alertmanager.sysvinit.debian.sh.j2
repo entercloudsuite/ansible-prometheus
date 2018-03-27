@@ -37,6 +37,10 @@ DAEMON_OPTS="--config.file=$CONFIG --storage.path={{ prometheus_alertmanager_db_
 DAEMON_OPTS="$DAEMON_OPTS {{ prometheus_alertmanager_opts }}"
 {% endif %}
 
+## web-external-url
+{% if prometheus_alertmanager_web_external_url is defined  %}
+DAEMON_OPTS="$DAEMON_OPTS --web.external-url=http://{{ prometheus_alertmanager_web_external_url }} --web.route-prefix={{ prometheus_alertmanager_web_route_prefix }}"
+{% endif %}
 
 
 # Check if DAEMON binary exist

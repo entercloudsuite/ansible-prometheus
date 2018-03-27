@@ -1,4 +1,4 @@
-Ansible Role: Prometheus 
+Ansible Role: Prometheus
 ======================================
 
 [![Build Status](https://travis-ci.org/entercloudsuite/ansible-prometheus.svg?branch=master)](https://travis-ci.org/entercloudsuite/ansible-prometheus)
@@ -19,20 +19,39 @@ The role defines most of its variables in `defaults/main.yml`:
 - Default value:  **my-prometheus.mydomain.it**
 
 ### `prometheus_components`
-- List of components to be installed.  
-- Default value: **[ "prometheus", "alertmanager" ]**  
+- List of components to be installed.
+- Default value: **[ "prometheus", "alertmanager" ]**
 
-### `prometheus_alertmanager_url`  
-- Url of the Alertmanager service.  
-- Default value: **"http://localhost:9093/"**  
+### `prometheus_alertmanager_url`
+- Url of the Alertmanager service.
+- Default value: **"http://localhost:9093/"**
 
-### `prometheus_version`  
-- Version of the Prometheus service.  
-- Default value: **2.0.0** 
+### `prometheus_version`
+- Version of the Prometheus service.
+- Default value: **2.2.0**
 
-### `alertmanager_version`  
-- Version of the Alertmanager service.  
-- Default value: **0.13.0** 
+### `alertmanager_version`
+- Version of the Alertmanager service.
+- Default value: **0.13.0**
+
+### `prometheus_prometheus_web_external_url:`  
+- The  URL  under  which  Prometheus  is  externally reachable  (for  example,  if  Prometheus  is  served  via a reverse proxy). Used for generating relative and absolute links back to Prometheus itself. If the URL has a path portion, it will be used to prefix all HTTP endpoints served by Prometheus. If omitted, relevant URL components will be derived automatically.
+- Default value: **Not defined** (By default get hostname)
+
+### `prometheus_prometheus_web_route_prefix:`  
+- Prefix forthe internal routes of web endpoints.
+- Default value: **Void**
+
+### `prometheus_alertmanager_web_external_url:`  
+- The  URL  under  which  Alertmanager  is  externally reachable  (for  example,  if  Alertmanagr  is  served  via a reverse proxy). Used for generating relative and absolute links back to Alertmanager itself. If the URL has a path portion, it will be used to prefix all HTTP endpoints served by Alertmanager. If omitted, relevant URL components will be derived automatically.
+- Default value: **Not defined** (By default get hostname)
+
+### `prometheus_alertmanager_web_route_prefix:`  
+- Prefix forthe internal routes of web endpoints.
+- Default value: **Void**
+
+
+
 
 ## Example Playbook
 
@@ -62,6 +81,11 @@ Destroy the Docker container with the command `molecule destroy`.
 To run all the steps with just one command, run `molecule test`. 
 
 In order to run the role targeting a VM, use the playbook_deploy.yml file for example with the following command: `ansible-playbook ansible-prometheus/molecule/default/playbook_deploy.yml -i VM_IP_OR_FQDN, -u ubuntu --private-key private.pem`.  
+
+# Fast Test
+docker-compose run --rm molecule
+molecule create
+molecule converge
 
 ## License
 

@@ -9,7 +9,6 @@ prometheus_group: prometheus
 # |			SoftwereVersion					      |
 # +----------------------------------------------------------------------------+
 prometheus_version: 2.2.0
-prometheus_node_exporter_version: 0.13.0
 prometheus_alertmanager_version: 0.13.0
 gosu_version: "1.10"
 prometheus_go_version: 1.6.2
@@ -41,6 +40,5 @@ prometheus_prometheus_web_external_url:
 prometheus_prometheus_web_route_prefix:
 # derived variables; internal use only.
 # ---- the following vars are handled in tasks/set-role-variables.yml ------
-prometheus_node_exporter_use_systemd: true  # use "systemd" to start/restart service?
 # Prometheus Autoconfigure Jobs
 prometheus_rules_manual_configuration: true

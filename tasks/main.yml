@@ -15,7 +15,7 @@
 
 - name: install dependencies for compiling Prometheus source code
   include: install-compile-tools.yml
-  when: ( prometheus_alertmanager_version == "git" or prometheus_node_exporter_version == "git" or prometheus_version == "git") and inventory_hostname == prometheus_server
+  when: ( prometheus_alertmanager_version == "git" or prometheus_version == "git") and inventory_hostname == prometheus_server
 
 - name: install dependencies for compiling Prometheus source code
   file:
@@ -68,10 +68,6 @@
 - name: install prometheus
   include: install-prometheus.yml
   when: '"prometheus" in prometheus_components and inventory_hostname == prometheus_server'
-
-- name: install node-exporter
-  include: install-node-exporter.yml
-  when: '"node_exporter" in prometheus_components'
 
 - name: install alertmanager
   include: install-alertmanager.yml

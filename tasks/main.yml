@@ -23,18 +23,12 @@
     state: directory
     mode: 0755
   
-
 - name: Display all variables/facts known for a host
   debug:
     var: hostvars[inventory_hostname].ansible_default_ipv4.address
 
-- name: install jobs
-  include: install-jobs.yml
-  when: prometheus_jobs is defined
-
 - name: create Prometheus group
-  group: name={{ prometheus_group }}  state=present
-  
+  group: name={{ prometheus_group }}  state=present 
 
 - name: create Prometheus user
   user:
@@ -59,16 +53,13 @@
     - "{{ prometheus_log_path }}"
     - "{{ prometheus_pid_path }}"
   
-
-
 - name: install helper utility "gosu"
   include: install-gosu.yml
   
-
 - name: install prometheus
   include: install-prometheus.yml
-  when: '"prometheus" in prometheus_components
+  when: '"prometheus" in prometheus_components'
 
 - name: install alertmanager
   include: install-alertmanager.yml
-  when: '"alertmanager" in prometheus_components
+  when: '"alertmanager" in prometheus_components'

@@ -42,14 +42,3 @@ scrape_configs:
 {% else %}
       - targets: ['127.0.0.1:9090']
 {% endif %}
-
-{% if prometheus_jobs is defined %}
-
-{% for job in prometheus_jobs %}
-  - job_name: {{ job.jobname }}
-    file_sd_configs:
-      - files:
-        - '{{ prometheus_file_sd_config_path }}/{{ job.jobname }}.yml'
-{% endfor %}
-
-{% endif %}

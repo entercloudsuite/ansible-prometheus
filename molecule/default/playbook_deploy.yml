@@ -6,7 +6,6 @@
   become_user: root
   hosts: all
   vars:
-    prometheus_server: default
     prometheus_components:
       - prometheus
     prometheus_rule_files:

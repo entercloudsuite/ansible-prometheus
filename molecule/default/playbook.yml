@@ -3,7 +3,6 @@
 - name: run the main role
   hosts: all
   vars:
-    prometheus_server: instance-1
     prometheus_rule_files:
       this_is_rule_1_InstanceDown:
         src: ../../templates/rules/basic.rules

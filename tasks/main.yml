@@ -15,14 +15,14 @@
 
 - name: install dependencies for compiling Prometheus source code
   include: install-compile-tools.yml
-  when: ( prometheus_alertmanager_version == "git" or prometheus_version == "git") and inventory_hostname == prometheus_server
+  when: ( prometheus_alertmanager_version == "git" or prometheus_version == "git")
 
 - name: install dependencies for compiling Prometheus source code
   file:
     path: "{{ prometheus_file_sd_config_path }}"
     state: directory
     mode: 0755
-  when: inventory_hostname == prometheus_server
+  
 
 - name: Display all variables/facts known for a host
   debug:
@@ -34,7 +34,7 @@
 
 - name: create Prometheus group
   group: name={{ prometheus_group }}  state=present
-  when: inventory_hostname == prometheus_server
+  
 
 - name: create Prometheus user
   user:
@@ -44,7 +44,7 @@
     shell: /sbin/nologin
     comment: "Prometheus User"
     state: present
-  when: inventory_hostname == prometheus_server
+  
 
 - name: mkdir for general cases
   file:
@@ -58,17 +58,17 @@
     - "{{ prometheus_config_path }}"
     - "{{ prometheus_log_path }}"
     - "{{ prometheus_pid_path }}"
-  when: inventory_hostname == prometheus_server
+  
 
 
 - name: install helper utility "gosu"
   include: install-gosu.yml
-  when: inventory_hostname == prometheus_server
+  
 
 - name: install prometheus
   include: install-prometheus.yml
-  when: '"prometheus" in prometheus_components and inventory_hostname == prometheus_server'
+  when: '"prometheus" in prometheus_components
 
 - name: install alertmanager
   include: install-alertmanager.yml
-  when: '"alertmanager" in prometheus_components and inventory_hostname == prometheus_server'
+  when: '"alertmanager" in prometheus_components

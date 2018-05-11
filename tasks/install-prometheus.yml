@@ -140,14 +140,14 @@
   template:
     src: "../templates/prometheus.yml.j2"
     dest: "/tmp/prometheus.yml"
-  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '>')
+  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '>') and prometheus_donotdeploy_configuration is not defined
 
 - name: copy prometheus main config file from role's default, if necessary new-check
   template:
     src: "../templates/prometheus.yml.j2"
     dest: "{{ prometheus_config_path }}/prometheus.yml"
     validate: "{{ prometheus_daemon_dir }}/promtool check config %s"
-  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '>')
+  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '>') and prometheus_donotdeploy_configuration is not defined
   notify:
     - reload prometheus
 - name: copy prometheus main config file from role's default, if necessary old-check
@@ -155,7 +155,7 @@
     src: "../templates/prometheus.yml.j2"
     dest: "{{ prometheus_config_path }}/prometheus.yml"
     validate: "{{ prometheus_daemon_dir }}/promtool check-config %s"
-  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '<=')
+  when: prometheus_conf_main is not defined and prometheus_version | version_compare('1.8.2', '<=') and prometheus_donotdeploy_configuration is not defined
   notify:
     - reload prometheus
 

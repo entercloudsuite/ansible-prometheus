@@ -2,7 +2,6 @@
 # variables needed to be defined in user's playbook
 # user-configurable defaults
 prometheus_components: ["prometheus", "alertmanager"]
-prometheus_server: my-prometheus.mydomain.it
 prometheus_user: prometheus
 prometheus_group: prometheus
 # +----------------------------------------------------------------------------+

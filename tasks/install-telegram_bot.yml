@@ -1,0 +1,58 @@
+---
+
+- name: Install docker-py 1.9.0 to fix Ansible issue 17495
+  apt:
+    name: python-pip
+    state: present
+
+- name: Install docker-py 1.9.0 to fix Ansible issue 17495
+  pip:
+    name: docker-py
+    version: 1.9.0
+    state: present
+
+- name: mkdir config folder for prometheus_bot
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: "u=rwx,g=rx,o="
+  with_items:
+    - "{{ prometheus_telegram_bot_confg_folder }}"
+
+- name: copy telegram bot default configuration
+  copy: 
+    src: "../files/telegram_bot_config.yml"  
+    dest: "{{prometheus_telegram_bot_confg_folder}}/config.yml"
+  when: prometheus_prometheus_bot_conf is not defined
+
+- name: copy telegram bot default template
+  copy: 
+    src: "../files/telegram_bot_default_template.yml"  
+    dest: "{{prometheus_telegram_bot_confg_folder}}/template.tmlp"
+  when: prometheus_prometheus_bot_template_conf is not defined
+
+- name: install prometheus telegram bot custom configuration
+  template: 
+    src: "{{ playbook_dir }}/{{ prometheus_prometheus_bot_conf }}"  
+    dest: "{{prometheus_telegram_bot_confg_folder}}/config.yml"
+  when: prometheus_prometheus_bot_conf is defined
+
+- name: install prometheus telegram bot custom template
+  template: 
+    src: "{{ playbook_dir }}/{{ prometheus_prometheus_bot_template_conf }}"  
+    dest: "{{prometheus_telegram_bot_confg_folder}}//template.tmlp"
+  when: prometheus_prometheus_bot_template_conf is defined
+
+- name: install prometheus_telegram_bot
+  docker_container:
+    name: prometheus_telegram_bot
+    image: attiliogreco96/prometheus_bot
+    state: started
+    restart_policy: always
+    ports:
+      - 9087:9087
+    volumes:
+      - "{{prometheus_telegram_bot_confg_folder}}/config.yml:/root/config.yaml"
+      - "{{prometheus_telegram_bot_confg_folder}}/template.tmlp:/root/template.tmlp"

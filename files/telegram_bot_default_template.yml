@@ -1,0 +1,29 @@
+<b>Customers: Prometheus telegram Bot</b>
+{{if eq .Status "firing" -}}
+<b>Status</b>: <i>{{.Status | str_UpperCase}} 🔥</i>
+{{end -}}
+{{if eq .Status "resolved" -}}
+Status: <b>{{.Status | str_UpperCase}} ✅</b>
+{{end -}}
+{{ $length := len .CommonLabels -}} 
+{{ if ne $length 0 -}} 
+<b>Common Labels:</b>
+{{ range $key,$val := .CommonLabels -}}
+<b>{{$key}}</b>: <code>{{$val}}</code>
+{{ end -}} {{ end -}}
+<b>Active Alert List:</b>
+{{- range $val := .Alerts }}
+
+<b>Alert:</b> {{ $val.Labels.alertname | str_UpperCase }}
+<b>Instance:</b> {{ $val.Labels.instance | str_UpperCase }} 
+  {{$severity := index $val.Labels "severity" -}}
+  {{if eq $severity "warning" -}}
+  Severity: {{$severity}} ⚠️
+  {{else if eq $severity "critical" -}}
+  Severity: {{$severity}} 🚨
+  {{else -}}
+  Severity: {{$severity}}
+  {{ end -}}
+  Active from: {{ $val.StartsAt }}
+  {{if $val.EndsAt -}}  End At: {{ $val.EndsAt }} {{- end }}
+  {{- end -}}

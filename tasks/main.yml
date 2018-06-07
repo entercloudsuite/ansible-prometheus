@@ -63,3 +63,7 @@
 - name: install alertmanager
   include: install-alertmanager.yml
   when: '"alertmanager" in prometheus_components'
+
+- name: install telegram bot
+  include: install-telegram_bot.yml
+  when: '"telegram_bot" in prometheus_components'

@@ -16,6 +16,7 @@
           - SYS_ADMIN
         volumes:
           - /sys/fs/cgroup:/sys/fs/cgroup:ro
+          - /var/run/docker.sock:/var/run/docker.sock
           - tmpfs:/run
           - tmpfs:/run/lock
         state: started

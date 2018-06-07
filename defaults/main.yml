@@ -1,7 +1,8 @@
 ---
 # variables needed to be defined in user's playbook
 # user-configurable defaults
-prometheus_components: ["prometheus", "alertmanager"]
+molecules: false
+prometheus_components: ["prometheus", "alertmanager", "telegram_bot"]
 prometheus_user: prometheus
 prometheus_group: prometheus
 # +----------------------------------------------------------------------------+

@@ -3,6 +3,7 @@
 - name: run the main role
   hosts: all
   vars:
+    molecules: true
     prometheus_rule_files:
       this_is_rule_1_InstanceDown:
         src: ../../templates/rules/basic.rules

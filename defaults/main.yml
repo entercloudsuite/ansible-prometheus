@@ -8,8 +8,8 @@ prometheus_group: prometheus
 # +----------------------------------------------------------------------------+
 # |			SoftwereVersion					      |
 # +----------------------------------------------------------------------------+
-prometheus_version: 2.3.0
-prometheus_alertmanager_version: 0.14.0
+prometheus_version: 2.3.2
+prometheus_alertmanager_version: 0.15.1
 gosu_version: "1.10"
 prometheus_go_version: 1.6.2
 # +----------------------------------------------------------------------------+

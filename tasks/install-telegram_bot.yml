@@ -23,7 +23,7 @@
 
 - name: copy telegram bot default configuration
   copy: 
-    src: "../files/telegram_bot_config.yml"  
+    src: "../files/telegram_bot_config.yml" 
     dest: "{{prometheus_telegram_bot_confg_folder}}/config.yml"
   when: prometheus_prometheus_bot_conf is not defined
 
@@ -34,13 +34,13 @@
   when: prometheus_prometheus_bot_template_conf is not defined
 
 - name: install prometheus telegram bot custom configuration
-  template: 
+  copy: 
     src: "{{ playbook_dir }}/{{ prometheus_prometheus_bot_conf }}"  
     dest: "{{prometheus_telegram_bot_confg_folder}}/config.yml"
   when: prometheus_prometheus_bot_conf is defined
 
 - name: install prometheus telegram bot custom template
-  template: 
+  copy: 
     src: "{{ playbook_dir }}/{{ prometheus_prometheus_bot_template_conf }}"  
     dest: "{{prometheus_telegram_bot_confg_folder}}//template.tmlp"
   when: prometheus_prometheus_bot_template_conf is defined

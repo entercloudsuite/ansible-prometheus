@@ -2,14 +2,15 @@
 # variables needed to be defined in user's playbook
 # user-configurable defaults
 molecules: false
-prometheus_components: ["prometheus", "alertmanager", "telegram_bot"]
+#prometheus_components: ["prometheus", "alertmanager", "telegram_bot"]
+prometheus_components: ["prometheus", "alertmanager"]
 prometheus_user: prometheus
 prometheus_group: prometheus
 # +----------------------------------------------------------------------------+
 # |			SoftwereVersion					      |
 # +----------------------------------------------------------------------------+
-prometheus_version: 2.3.2
-prometheus_alertmanager_version: 0.15.1
+prometheus_version: 2.4.2
+prometheus_alertmanager_version: 0.15.2
 gosu_version: "1.10"
 prometheus_go_version: 1.6.2
 # +----------------------------------------------------------------------------+

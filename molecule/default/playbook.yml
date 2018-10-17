@@ -2,11 +2,25 @@
 
 - name: run the main role
   hosts: all
-  vars:
-          #    molecules: true
-    prometheus_rule_files:
-      this_is_rule_1_InstanceDown:
-        src: ../../templates/rules/basic.rules
-        dest: basic.rules
   roles:
     - { role: ansible-prometheus }
+      prometheus_conf_main: "prometheus/prometheus.yml"
+      prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+      prometheus_rule_files:
+        basic_rules:
+          src:  "prometheus/rules/basic.rules"
+          dest: basic.rules
+        black_box_rules:
+          src:  "prometheus/rules/black_box.rules"
+          dest: black_box.rules
+    - role: cloudalchemy.grafana
+      grafana_security: { admin_user: admin, admin_password: "admin" }
+    - role: entercloudsuite.prometheus-exporter 
+      prometheus_exporter_name: node_exporter
+#    - role: entercloudsuite.prometheus-exporter
+#      prometheus_exporter_name: blackbox_exporter
+#      prometheus_exporter_version: 0.12.0
+#      prometheus_expoter_conf_main: "prometheus/config_blackbox_exporter.yaml"
+#      prometheus_exporter_config_flags:
+#        "--config.file": "{{ prometheus_expoter_custom_conf_destination }}/config_blackbox_exporter.yaml"
+#      tags: blackbox_exporter

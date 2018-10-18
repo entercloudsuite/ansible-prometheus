@@ -3,7 +3,7 @@
 - name: run the main role
   hosts: all
   roles:
-    - { role: ansible-prometheus }
+    - role: ansible-prometheus
       prometheus_conf_main: "prometheus/prometheus.yml"
       prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
       prometheus_rule_files:

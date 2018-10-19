@@ -104,17 +104,17 @@
     - "{{ prometheus_file_sd_config_path }}"
     - "{{ prometheus_db_path }}"
 
-- name: set prometheus variables
-  copy: src="../files/etc-default-prometheus"  dest=/etc/default/prometheus
-
-- name: copy INIT script to server
-  template: src="../templates/prometheus.sysvinit.{{ ansible_os_family|lower }}.sh.j2"  dest="/etc/init.d/prometheus"  mode="a+x"
+- name: copy Systemd script to server
+  template: 
+    src: "../templates/prometheus.systemd.service.j2"
+    dest: "/etc/systemd/system/prometheus.service"
   notify:
     - restart prometheus
 
-
-- name: set INIT status
-  service: name=prometheus enabled=yes
+- name: set prometheus-server to enable
+  service: 
+    name: prometheus
+    enabled: yes
 
 - name: copy rule files from playbook's, if any
   copy:

@@ -18,6 +18,9 @@ provisioner:
     create: create.yml
     prepare: prepare.yml
     destroy: destroy.yml
+  lint:
+    name: ansible-lint
+    enabled: True
 scenario:
   name: default
   test_sequence:

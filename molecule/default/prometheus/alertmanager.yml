@@ -1,0 +1,24 @@
+global:
+route:
+  receiver: 'default-receiver'
+  group_wait: 30s
+  repeat_interval: 3h
+  group_by: [cluster, alertname]
+
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+    - to: myemail_to_alert@example.com
+      from: prometheus@example.com
+      smarthost: out.example.com:587
+      auth_username: "prometheus@example.com"
+      auth_identity: "prometheus@example.com"
+      auth_password: "VeryVeryS3ctret"
+      send_resolved: true
+    - to: me@example.com
+      from: prometheus@example.com
+      smarthost: out.entermail.it:587
+      auth_username: "prometheus@example.com"
+      auth_identity: "prometheus@example.com"
+      auth_password: "VeryVeryS3ctret"
+      send_resolved: true

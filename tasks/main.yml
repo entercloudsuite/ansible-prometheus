@@ -20,9 +20,10 @@
     var: hostvars[inventory_hostname].ansible_default_ipv4.address
 
 - name: create Prometheus group
-  group: 
+  group:
     name: "{{ prometheus_group }}"
-    state: present 
+    state: present
+    system: yes
 
 - name: create Prometheus user
   user:
@@ -32,6 +33,7 @@
     shell: /sbin/nologin
     comment: "Prometheus User"
     state: present
+    system: yes
 
 - name: mkdir for general cases
   file:

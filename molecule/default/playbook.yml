@@ -58,3 +58,65 @@
         sysctl_set: yes
         state: present
         reload: yes
+- name: prepare virtualenv
+  hosts: all
+  tasks:
+    - name: create var project path
+      set_fact:
+        script_path: /usr/src/cloud
+    - name: install requirements
+      package: name="{{ item }}"
+      with_items:
+        - libffi-dev
+        - libssl-dev
+        - python-minimal
+        - python-pip
+        - virtualenv
+    - name: create directory
+      file: path="{{ item }}" state=directory
+      with_items:
+        - "{{ script_path }}"
+        - "{{ script_path }}/roles"
+    - name: create requirements.txt
+      copy:
+        content: |
+          ansible==2.6.2
+          asn1crypto==0.23.0
+          bcrypt==3.1.4
+          cffi==1.11.2
+          cryptography==2.1.3
+          enum34==1.1.6
+          idna==2.6
+          ipaddress==1.0.18
+          Jinja2==2.10
+          MarkupSafe==1.0
+          paramiko==2.4.0
+          pyasn1==0.3.7
+          pycparser==2.18
+          pycrypto==2.6.1
+          PyNaCl==1.2.0
+          PyYAML==3.12
+          six==1.11.0
+          jmespath==0.9.3
+        dest: "{{ script_path }}/requirements.txt"
+        remote_src: yes
+    - name: create requirements.yml
+      copy:
+        content: |
+          - src: entercloudsuite.consul
+            version: 1.0.1
+          - src: cloudalchemy.grafana
+            version: 0.11.2
+          - src: entercloudsuite.prometheus-exporter
+            version: 1.0.4
+        dest: "{{ script_path }}/requirements.yml"
+        remote_src: yes
+    - name: install python requirements
+      pip:
+        requirements: "{{ script_path }}/requirements.txt"
+        virtualenv: "{{ script_path }}/venv"
+    - name: install ansible roles
+      shell: source {{ script_path }}/venv/bin/activate && ansible-galaxy install -f -p roles -r requirements.yml
+      args:
+        chdir: "{{ script_path }}"
+        executable: /bin/bash

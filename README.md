@@ -14,25 +14,29 @@ This role requires Ansible 2.4 or higher.
 
 The role defines most of its variables in `defaults/main.yml`:
 
-### `prometheus_server`
-- Prometheus server address or hostname
-- Default value:  **my-prometheus.mydomain.it**
-
 ### `prometheus_components`
 - List of components to be installed.
-- Default value: **[ "prometheus", "alertmanager" ]**
+- Default value: **["prometheus", "alertmanager", "telegram_bot"]**
+
+Telegram bot will install docker
 
 ### `prometheus_alertmanager_url`
 - Url of the Alertmanager service.
-- Default value: **"http://localhost:9093/"**
+
+- Default value: **http://{{alertmanager_url}}:{{alertmanager_port}}**
+- Result Value **"http://localhost:9093/"**
+### alertmanager_url
+  - Default Value: localhost
+### alertmanager_port:
+  - Default : **9093**
 
 ### `prometheus_version`
 - Version of the Prometheus service.
-- Default value: **2.2.0**
+- Default value: **2.4.2**
 
 ### `alertmanager_version`
 - Version of the Alertmanager service.
-- Default value: **0.13.0**
+- Default value: **0.15.2**
 
 ### `prometheus_prometheus_web_external_url:`  
 - The  URL  under  which  Prometheus  is  externally reachable  (for  example,  if  Prometheus  is  served  via a reverse proxy). Used for generating relative and absolute links back to Prometheus itself. If the URL has a path portion, it will be used to prefix all HTTP endpoints served by Prometheus. If omitted, relevant URL components will be derived automatically.
@@ -51,16 +55,76 @@ The role defines most of its variables in `defaults/main.yml`:
 - Default value: **Void**
 
 
-
-
-## Example Playbook
-
+## Playbook Example
+### Basic Playbook
+``` yaml
 Run with default vars:
 
     - hosts: all
       roles:
         - role: ansible-prometheus
           prometheus_server: prometheus_hostname
+```
+
+### Production Playbook
+
+``` yaml
+Run with default vars:
+- hosts: all
+      roles:
+      - role: entercloudsuite.prometheus
+        prometheus_conf_main: "prometheus/prometheus.yml"
+        prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+        prometheus_rule_files:
+          basic_rules:
+            src:  "prometheus/rules/basic.rules"
+            dest: basic.rules
+          black_box_rules:
+            src:  "prometheus/rules/black_box.rules"
+            dest: black_box.rules
+
+```
+### Production Tree Example
+
+```
+├── group_vars
+│   └── all
+├── host
+├── playbook.yml
+├── prometheus
+│   ├── alertmanager.yml
+│   ├── prometheus.yml
+│   ├── rules
+│   │   ├── basic.rules
+│   │   └── black_box.rules
+│   └── telegram_bot
+│       ├── config.yaml
+│       └── template.tmpl
+├── requirements.yaml
+└── roles
+
+```
+
+### Prometheus bot configuration
+
+``` yaml
+Run with default vars:
+- hosts: all
+      roles:
+      - role: entercloudsuite.prometheus
+        prometheus_conf_main: "prometheus/prometheus.yml"
+        prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+        prometheus_prometheus_bot_template_conf: prometheus/telegram_bot/template.tmpl
+        prometheus_prometheus_bot_conf: prometheus/telegram_bot/config.yaml
+        prometheus_rule_files:
+          basic_rules:
+            src:  "prometheus/rules/basic.rules"
+            dest: basic.rules
+          black_box_rules:
+            src:  "prometheus/rules/black_box.rules"
+            dest: black_box.rules
+
+```
 
 ## Testing
 

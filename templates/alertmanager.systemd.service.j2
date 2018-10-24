@@ -1,0 +1,20 @@
+[Unit]
+Description=Prometheus Alertmanager
+After=network.target
+
+[Service]
+User={{ prometheus_user }}
+Group={{ prometheus_group }}
+Type=simple
+PIDFile={{ prometheus_pid_path }}/$NAME.pid
+ExecStart={{ prometheus_alertmanager_daemon_dir }}/alertmanager \
+    --config.file={{ prometheus_config_path }}/alertmanager.yml \
+    --storage.path={{ prometheus_alertmanager_db_path }}
+    {% if prometheus_alertmanager_web_external_url is defined %}
+    --web.external-url=http://{{ prometheus_alertmanager_web_external_url }} --web.route-prefix={{ prometheus_alertmanager_web_route_prefix }}"
+    {% endif %}
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

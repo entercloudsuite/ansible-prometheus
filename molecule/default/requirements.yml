@@ -1,2 +1,5 @@
 ---
 - src: geerlingguy.docker
+- src: cloudalchemy.grafana
+  version: 0.11.2
+- src: entercloudsuite.prometheus-exporter

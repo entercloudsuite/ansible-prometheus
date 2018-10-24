@@ -1,12 +1,60 @@
 ---
-
 - name: run the main role
   hosts: all
-  vars:
-    molecules: true
-    prometheus_rule_files:
-      this_is_rule_1_InstanceDown:
-        src: ../../templates/rules/basic.rules
-        dest: basic.rules
   roles:
-    - { role: ansible-prometheus }
+    - role: ansible-prometheus
+      prometheus_conf_main: "prometheus/prometheus.yml"
+      prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+      prometheus_rule_files:
+        basic_rules:
+          src:  "prometheus/rules/basic.rules"
+          dest: basic.rules
+        black_box_rules:
+          src:  "prometheus/rules/black_box.rules"
+          dest: black_box.rules
+    - role: cloudalchemy.grafana
+      grafana_security: { admin_user: admin, admin_password: "admin" }
+      grafana_datasources:
+        - name: prometheus
+          type: prometheus
+          access: proxy
+          url: 'http://localhost:9090'
+          basicAuth: false
+      grafana_dashboards:
+        - dashboard_id: 3681
+          revision_id: 1
+          datasource: prometheus
+    - role: entercloudsuite.prometheus-exporter 
+      prometheus_exporter_name: node_exporter
+    - role: entercloudsuite.prometheus-exporter
+      prometheus_exporter_name: blackbox_exporter
+      prometheus_exporter_version: 0.12.0
+      prometheus_exporter_conf_main: "prometheus/config_blackbox_exporter.yaml"
+      prometheus_exporter_config_flags:
+        "--config.file": "{{ prometheus_exporter_custom_conf_destination }}/config_blackbox_exporter.yaml"
+      tags: blackbox_exporter
+  
+  post_tasks:
+    - name: Register Prometheus GID
+      command: id -g {{ prometheus_exporters_common_group }}
+      register: command_output
+    - set_fact:
+        prometheus_exporters_common_git_user: "{{ command_output.stdout }}"
+    - debug: msg="{{prometheus_exporters_common_git_user}}"
+    - name: Register Prometheus UID
+      command: id -u {{ prometheus_exporters_common_user }}
+      register: command_output
+    - set_fact:
+        prometheus_exporters_common_uid_user: "{{ command_output.stdout }}"
+    - debug: msg="{{prometheus_exporters_common_uid_user}}"
+    - name: set sysctl factl
+      set_fact:
+        sysctl_ping_grop_range: " {{ prometheus_exporters_common_uid_user }} {{ prometheus_exporters_common_uid_user  | int +1 }}"
+    - debug: msg="{{sysctl_ping_grop_range}}"
+    - name: configre kernel for blackbox_expoter ping
+      sysctl: 
+        name: net.ipv4.ping_group_range
+        value: "{{sysctl_ping_grop_range}}"
+        sysctl_set: yes
+        state: present
+        reload: yes

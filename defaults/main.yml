@@ -2,14 +2,15 @@
 # variables needed to be defined in user's playbook
 # user-configurable defaults
 molecules: false
-prometheus_components: ["prometheus", "alertmanager", "telegram_bot"]
+#prometheus_components: ["prometheus", "alertmanager", "telegram_bot"]
+prometheus_components: ["prometheus", "alertmanager"]
 prometheus_user: prometheus
 prometheus_group: prometheus
 # +----------------------------------------------------------------------------+
 # |			SoftwereVersion					      |
 # +----------------------------------------------------------------------------+
-prometheus_version: 2.3.2
-prometheus_alertmanager_version: 0.15.1
+prometheus_version: 2.4.2
+prometheus_alertmanager_version: 0.15.2
 gosu_version: "1.10"
 prometheus_go_version: 1.6.2
 # +----------------------------------------------------------------------------+
@@ -35,10 +36,13 @@ prometheus_gopath: "{{ prometheus_workdir }}/gopath"
 prometheus_clean_tarball: true
 # rebuild each time?  (only applied to `git` version)
 prometheus_rebuild: false
-prometheus_alertmanager_web_external_url:
-prometheus_alertmanager_web_route_prefix:
-prometheus_prometheus_web_external_url:
-prometheus_prometheus_web_route_prefix:
+#+----------------------------------------------------------------------------+
+#|                       Keep It Disable if not used                          |
+#+----------------------------------------------------------------------------+
+#prometheus_alertmanager_web_external_url:
+#prometheus_alertmanager_web_route_prefix:
+#prometheus_prometheus_web_external_url:
+#prometheus_prometheus_web_route_prefix:
 # derived variables; internal use only.
 # ---- the following vars are handled in tasks/set-role-variables.yml ------
 # Prometheus Autoconfigure Jobs

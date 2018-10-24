@@ -1,0 +1,22 @@
+[Unit]
+Description=Prometheus
+After=network.target
+
+[Service]
+User={{ prometheus_user }}
+Group={{ prometheus_group }}
+Type=simple
+PIDFile="{{ prometheus_pid_path }}/prometheus.pid"
+ExecStart={{ prometheus_daemon_dir }}/prometheus \
+    --config.file={{ prometheus_config_path }}/prometheus.yml \
+    --storage.tsdb.path={{ prometheus_db_path }} \
+    --web.console.templates={{ prometheus_daemon_dir }}/consoles \
+    --web.console.libraries={{ prometheus_daemon_dir }}/console_libraries
+    {% if prometheus_prometheus_web_external_url is defined %}
+    --web.external-url=http://{{ prometheus_prometheus_web_external_url }} --web.route-prefix={{ prometheus_prometheus_web_route_prefix }}"
+    {% endif %}
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

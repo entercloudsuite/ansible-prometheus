@@ -9,14 +9,11 @@ global:
     monitor: 'master'
 
 
-
-{% if prometheus_version | version_compare('2.0.0', '>=')  %}
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
       - {{alertmanager_url}}:{{alertmanager_port}}
-{% endif %}
 
 
 {% if prometheus_rule_files is defined %}

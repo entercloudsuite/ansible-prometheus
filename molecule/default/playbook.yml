@@ -26,6 +26,7 @@
           datasource: prometheus
     - role: entercloudsuite.prometheus-exporter 
       prometheus_exporter_name: node_exporter
+      prometheus_exporter_version: 0.16.0
     - role: entercloudsuite.prometheus-exporter
       prometheus_exporter_name: blackbox_exporter
       prometheus_exporter_version: 0.12.0
@@ -33,6 +34,20 @@
       prometheus_exporter_config_flags:
         "--config.file": "{{ prometheus_exporter_custom_conf_destination }}/config_blackbox_exporter.yaml"
       tags: blackbox_exporter
+    - role: entercloudsuite.consul
+      consul_version: 1.2.3
+      consul_packer_provision: true
+      consul_configs:
+        main:
+          bind_addr: 0.0.0.0
+          client_addr: 0.0.0.0
+          node_name: "{{ ansible_hostname }}"
+          data_dir: "{{ consul_data_dir }}"
+          encrypt: "K8n07GA/ZoANSmJ5zkvgOg=="
+          enable_syslog: true
+          datacenter: automium
+          server: true
+          ui: true
   
   post_tasks:
     - name: Register Prometheus GID
@@ -88,7 +103,7 @@
           enum34==1.1.6
           idna==2.6
           ipaddress==1.0.18
-          Jinja2==2.10
+          Jinja2==2.10:q
           MarkupSafe==1.0
           paramiko==2.4.0
           pyasn1==0.3.7

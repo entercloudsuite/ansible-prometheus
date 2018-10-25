@@ -1,6 +1,25 @@
 ---
 - name: run the main role
   hosts: all
+  pre_tasks:
+    - name: update repositories cache
+      apt:
+        update_cache: yes
+    - package: name={{ item }} state=latest
+      with_items:
+        - curl
+        - jq
+        - iproute
+        - rsyslog
+        - ca-certificates
+        - sudo
+        - python-apt
+        - software-properties-common
+        - tar
+        - unzip
+        - bzip2
+        - gzip
+        - git
   roles:
     - role: ansible-prometheus
       prometheus_conf_main: "prometheus/prometheus.yml"
@@ -48,7 +67,6 @@
           datacenter: automium
           server: true
           ui: true
-  
   post_tasks:
     - name: Register Prometheus GID
       command: id -g {{ prometheus_exporters_common_group }}
@@ -118,6 +136,8 @@
     - name: create requirements.yml
       copy:
         content: |
+          - src: https://github.com/entercloudsuite/ansible-prometheus
+            version: "{{ lookup('env','TRAVIS_COMMIT') }}"
           - src: entercloudsuite.consul
             version: 1.0.1
           - src: cloudalchemy.grafana

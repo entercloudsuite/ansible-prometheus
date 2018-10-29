@@ -10,3 +10,4 @@ ansible-role-*
 *.pem
 *.pem.pub
 .tox
+.*.sw*

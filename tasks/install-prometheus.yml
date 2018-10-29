@@ -18,11 +18,33 @@
   set_fact:
     prometheus_daemon_dir: "{{ prometheus_subdir }}"
 
-- name: download and untar prometheus tarball
+- name: create prometheus_tarball_path archive in "{{prometheus_tarball_path}}"
+  file:
+    path: "{{ prometheus_tarball_path }}"
+    state: directory
+    mode: 0755
+
+- name: download prometheus tarball
+  get_url:
+    url: "{{ prometheus_tarball_url }}"
+    dest: "{{ prometheus_tarball_path }}"
+  register: prometheus_compressed_download
+
+- name: set up prometheus_exporter_dir_name variable
+  set_fact: 
+    prometheus_prometheus_dir_name: "{{ prometheus_compressed_download.dest.split('/')[-1].replace('.tar.gz','') }}"
+
+- name: debug
+  debug:
+    var: prometheus_prometheus_dir_name
+
+- name: unarchive binary tarball
   unarchive:
-    src: "{{ prometheus_tarball_url }}"
+    remote_src: yes
+    src: "{{ prometheus_tarball_path }}/{{ prometheus_prometheus_dir_name }}.tar.gz"
     dest: "{{ prometheus_install_path }}"
-    copy: no
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
 
 - name: set permissions, owner and group
   file:

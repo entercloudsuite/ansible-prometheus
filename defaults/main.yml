@@ -20,6 +20,7 @@ prometheus_alertmanager_url: "http://{{alertmanager_url}}:{{alertmanager_port}}"
 alertmanager_url: localhost
 alertmanager_port: 9093
 prometheus_install_path: /opt/prometheus
+prometheus_tarball_path: "{{prometheus_install_path}}/tar_archive"
 prometheus_config_path: /etc/prometheus
 prometheus_web_route_prefix:
 prometheus_rule_path: "{{ prometheus_config_path }}/rules"

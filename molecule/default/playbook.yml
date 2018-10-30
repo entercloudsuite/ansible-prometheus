@@ -28,9 +28,6 @@
         basic_rules:
           src:  "prometheus/rules/basic.rules"
           dest: basic.rules
-        black_box_rules:
-          src:  "prometheus/rules/black_box.rules"
-          dest: black_box.rules
     - role: cloudalchemy.grafana
       grafana_security: { admin_user: admin, admin_password: "admin" }
       grafana_datasources:
@@ -69,17 +66,20 @@
       register: command_output
     - set_fact:
         prometheus_exporters_common_git_user: "{{ command_output.stdout }}"
-    - debug: msg="{{prometheus_exporters_common_git_user}}"
+    - debug: 
+        msg: "{{prometheus_exporters_common_git_user}}"
     - name: Register Prometheus UID
       command: id -u {{ prometheus_exporters_common_user }}
       register: command_output
     - set_fact:
         prometheus_exporters_common_uid_user: "{{ command_output.stdout }}"
-    - debug: msg="{{prometheus_exporters_common_uid_user}}"
+    - debug: 
+        msg: "{{prometheus_exporters_common_uid_user}}"
     - name: set sysctl factl
       set_fact:
         sysctl_ping_grop_range: " {{ prometheus_exporters_common_uid_user }} {{ prometheus_exporters_common_uid_user  | int +1 }}"
-    - debug: msg="{{sysctl_ping_grop_range}}"
+    - debug: 
+        msg: "{{sysctl_ping_grop_range}}"
     - name: configre kernel for blackbox_expoter ping
       sysctl: 
         name: net.ipv4.ping_group_range
@@ -87,6 +87,29 @@
         sysctl_set: yes
         state: present
         reload: yes
+    - name: create dashboard-repo folder
+      file:
+        path: /tmp/grafana-tmp-dashboard
+        state: directory
+    - name: get grafana dashboard from {{grafna_dashboard_repo}}
+      git:
+        repo: https://github.com/AttilioGreco/grafana-dashboard
+        dest: /tmp/grafana-tmp-dashboard
+    - name: get list of dashboard
+      find:
+        paths: /tmp/grafana-tmp-dashboard
+        patterns: "*.json"
+      register: dashboard_list
+
+    - name: Import Grafana dashboard
+      grafana_dashboard:
+        grafana_url: http://localhost:3000
+        slug: "{{ item.path.split('/')[-1].replace('.json','')  }}"
+        state: present
+        message: Updated by ansible
+        path: "{{ item.path }}"
+      with_items: "{{ dashboard_list.files }}"
+
 - name: prepare virtualenv
   hosts: all
   tasks:

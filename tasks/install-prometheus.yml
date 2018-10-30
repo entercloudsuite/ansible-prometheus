@@ -82,10 +82,15 @@
   copy:
     src: "{{ playbook_dir }}/{{ item.value.src }}"
     dest: "{{ prometheus_rule_path }}/{{ item.value.dest }}"
-#    validate: "{{ prometheus_daemon_dir }}/promtool check rules %s"
+    validate: "{{ prometheus_daemon_dir }}/promtool check rules %s"
   with_dict: "{{ prometheus_rule_files | default({}) }}"
   notify:
     - reload prometheus
+- name: copy rules from git repo if is configured
+  git:
+    repo: "{{ prometheus_rule_git_repo }}"
+    dest: /tmp/grafana-tmp-dashboard
+  when: prometheus_rule_git_repo is defined
 
 - name: create tmp copy for manual check
   template:

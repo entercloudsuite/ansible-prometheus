@@ -24,10 +24,6 @@
     - role: ansible-prometheus
       prometheus_conf_main: "prometheus/prometheus.yml"
       prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
-      prometheus_rule_files:
-        basic_rules:
-          src:  "prometheus/rules/basic.rules"
-          dest: basic.rules
     - role: cloudalchemy.grafana
       grafana_security: { admin_user: admin, admin_password: "admin" }
       grafana_datasources:
@@ -93,7 +89,7 @@
         state: directory
     - name: get grafana dashboard from {{grafna_dashboard_repo}}
       git:
-        repo: https://github.com/AttilioGreco/grafana-dashboard
+        repo: https://github.com/entercloudsuite/grafana-dashboard.git
         dest: /tmp/grafana-tmp-dashboard
     - name: get list of dashboard
       find:

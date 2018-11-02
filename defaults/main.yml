@@ -24,7 +24,9 @@ prometheus_tarball_path: "{{prometheus_install_path}}/tar_archive"
 prometheus_config_path: /etc/prometheus
 prometheus_web_route_prefix:
 # Configure this var for download rules from repo fork my rules repo
-#prometheus_rule_git_repo:
+prometheus_rule_git_repo: https://github.com/entercloudsuite/prometheus-rules-collections.git
+# prometheus_rules_git_version
+prometheus_rules_version: master
 prometheus_rule_path: "{{ prometheus_config_path }}/rules"
 prometheus_telegram_bot_confg_folder: "{{ prometheus_config_path }}/prometheus_bot"
 prometheus_file_sd_config_path: "{{ prometheus_config_path }}/tgroups"

@@ -9,10 +9,8 @@ prometheus_group: prometheus
 # +----------------------------------------------------------------------------+
 # |			SoftwereVersion					      |
 # +----------------------------------------------------------------------------+
-prometheus_version: 2.4.2
-prometheus_alertmanager_version: 0.15.2
-gosu_version: "1.10"
-prometheus_go_version: 1.6.2
+prometheus_version: 2.5.0
+prometheus_alertmanager_version: 0.15.3
 # +----------------------------------------------------------------------------+
 # |			Configuration Path				      |
 # +----------------------------------------------------------------------------+
@@ -36,9 +34,7 @@ prometheus_pid_path: /var/run/prometheus
 prometheus_alertmanager_db_path: /var/lib/alertmanager
 prometheus_download_path: /tmp
 prometheus_workdir: "{{ prometheus_download_path }}/prometheus_workdir"
-prometheus_goroot: "{{ prometheus_workdir }}/go"
-prometheus_gopath: "{{ prometheus_workdir }}/gopath"
-prometheus_clean_tarball: true
+prometheus_clean_tarball: false
 # rebuild each time?  (only applied to `git` version)
 prometheus_rebuild: false
 #+----------------------------------------------------------------------------+

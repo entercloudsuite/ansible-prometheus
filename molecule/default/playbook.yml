@@ -126,11 +126,20 @@
           jmespath==0.9.3
         dest: "{{ script_path }}/requirements.txt"
         remote_src: yes
+    - name: get current repo and commit
+      set_fact:
+        repository: "{{ lookup('env','TRAVIS_REPO_SLUG') }}"
+        commit: "{{ lookup('env','TRAVIS_COMMIT') }}"
+    - name: get current pull request repo and commit
+      set_fact:
+        repository: "{{ lookup('env','TRAVIS_PULL_REQUEST_SLUG') }}"
+        commit: "{{ lookup('env','TRAVIS_PULL_REQUEST_SHA') }}"
+      when: lookup('env','TRAVIS_PULL_REQUEST_SLUG') != ""
     - name: create requirements.yml
       copy:
         content: |
-          - src: https://github.com/entercloudsuite/ansible-prometheus
-            version: "{{ lookup('env','TRAVIS_COMMIT') }}"
+          - src: "https://github.com/{{ repository }}"
+            version: "{{ commit }}"
           - src: entercloudsuite.consul
             version: 1.0.1
           - src: cloudalchemy.grafana

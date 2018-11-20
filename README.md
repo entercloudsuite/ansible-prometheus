@@ -125,6 +125,55 @@ Run with default vars:
             dest: black_box.rules
 
 ```
+## Configure Rules by git repository
+
+you can manage rules by git repository, in 4 ways.
+### 1. Open Repository
+In case you wanna clone rules from openrepository.
+Example: https://github.com/entercloudsuite/prometheus-rules-collections.git
+
+you nead configure just var prometheus_rule_git_repo
+```yaml
+- hosts: all
+      roles:
+      - role: entercloudsuite.prometheus
+        prometheus_conf_main: "prometheus/prometheus.yml"
+        prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+        prometheus_rule_git_repo: https://github.com/entercloudsuite/prometheus-rules-collections.git
+```
+### 2. Private ssh repository wit pre loaded keys
+
+```yaml
+- hosts: all
+      roles:
+      - role: entercloudsuite.prometheus
+        prometheus_conf_main: "prometheus/prometheus.yml"
+        prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+        prometheus_rule_git_repo: gogs@mygitserver.com:myuser/my_repo.git
+        prometheus_rule_git_key_pathfile: /path_to_key/inmyserver/private.pem
+```
+### 3. Private ssh repository wit not pre loaded keys ( Example new clear installation)
+```yaml
+- hosts: all
+      roles:
+      - role: entercloudsuite.prometheus
+        prometheus_conf_main: "prometheus/prometheus.yml"
+        prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+        prometheus_rule_git_repo: gogs@mygitserver.com:myuser/my_repo.git
+        prometheus_rule_git_key: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          MY_KEY
+          -----END OPENSSH PRIVATE KEY-----
+```
+### 4. Private https repository
+```yaml
+- hosts: all
+      roles:
+      - role: entercloudsuite.prometheus
+        prometheus_conf_main: "prometheus/prometheus.yml"
+        prometheus_alertmanager_conf: "prometheus/alertmanager.yml"
+        prometheus_rule_git_repo: https://git_username:git_password@mygitserver.com/myuser/my_repo.git
+```
 
 ## Testing
 

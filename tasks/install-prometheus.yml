@@ -87,12 +87,27 @@
   notify:
     - reload prometheus
 
+- name: Create ssh config key
+  copy:
+    content: "{{ prometheus_rule_git_key }}"
+    dest: "{{ prometheus_rule_git_key_pathfile_tmp }}"
+    mode: 0400
+  when: prometheus_rule_git_key is defined
+
 - name: copy rules from git repo if is configured
   git:
     repo: "{{ prometheus_rule_git_repo }}"
-    dest: "{{ prometheus_rule_path }}"
-    version: "{{ prometheus_rules_version }}"
+    dest: "{{ prometheus_rule_git_path }}"
+    version: "{{ prometheus_rule_git_version }}"
+    ssh_opts: "-o StrictHostKeyChecking=no"
+    key_file: "{{ prometheus_rule_git_key_pathfile }}"
   when: prometheus_rule_git_repo is defined
+
+- name: delete key if create by ansible
+  file:
+    state: absent
+    path: "{{ prometheus_rule_git_key_pathfile_tmp }}"
+  when: prometheus_rule_git_key is defined
 
 - name: create tmp copy for manual check
   template:

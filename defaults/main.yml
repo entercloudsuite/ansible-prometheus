@@ -22,7 +22,7 @@ prometheus_tarball_path: "{{prometheus_install_path}}/tar_archive"
 prometheus_config_path: /etc/prometheus
 prometheus_rule_path: "{{ prometheus_config_path }}/rules"
 # Configure this var for download rules from repo fork my rules repo
-prometheus_rule_git_repo:
+# prometheus_rule_git_repo:
 # prometheus_rules_git_version
 prometheus_rule_git_path: "{{ prometheus_rule_path }}"
 prometheus_rule_git_version: master
